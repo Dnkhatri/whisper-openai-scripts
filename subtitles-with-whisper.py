@@ -83,12 +83,12 @@ for f in files:
         )
         if not os.path.exists(f"{f}.temp"):
             r = model.transcribe(f,language=WHISPER_LANGUAGE,verbose=WHISPER_VERBOSE)
-            with open(f"{f}.temp", "w") as file:
+            with open(f"{f}.temp", "w", encoding="utf-8") as file:
                 file.write(str(r))
                 file.close()
             print(f"Subtitle data temp-written to {f}.temp")
         else:
-            with open(f"{f}.temp", "r") as file:
+            with open(f"{f}.temp", "r", encoding="utf-8") as file:
                 r = ast.literal_eval(file.read())
                 file.close()
             print(f"Subtitle data read from {f}.temp!")
@@ -101,14 +101,14 @@ for f in files:
             formatted_outputs = ", ".join(formatted_outputs)
         print(f"Making subtitle files to {formatted_outputs}...")
         if "txt" in OUTPUTS:
-            with open(f"{f}.txt", "w") as file:
+            with open(f"{f}.txt", "w", encoding="utf-8") as file:
                 for seg in r["segments"]:
                     file.write(f"{str(seg[TEXT])[1:len(str(seg[TEXT]))]}\n")
                 file.close()
                 print(f"Text subtitles written to {f}.txt!")
         ### SRT ###
         if "srt" in OUTPUTS or "vtt" in OUTPUTS:
-            with open(f"{f}.srt", "w") as file:
+            with open(f"{f}.srt", "w", encoding="utf-8") as file:
                 for seg in r["segments"]:
                     id = int(seg["id"]) + 1
                     seg[START] = str("{:.3f}".format(float(seg[START])))
