@@ -2,8 +2,9 @@
 # Editable Variables
 EXT = "mp4"
 WHISPER_MODEL = "base"
+WHISPER_VERBOSE = "False"
+WHISPER_LANGUAGE = "English"
 OUTPUTS = "txt,srt,vtt"
-LANGUAGE = "English"
 ###############################
 
 # Clear terminal and set title variables
@@ -80,7 +81,7 @@ for f in files:
             f"title Working on {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
         )
         if not os.path.exists(f"{f}.temp"):
-            r = model.transcribe(f,language=LANGUAGE)
+            r = model.transcribe(f,language=WHISPER_LANGUAGE,verbose=WHISPER_VERBOSE)
             with open(f"{f}.temp", "w") as file:
                 file.write(str(r))
                 file.close()
