@@ -86,7 +86,7 @@ for f in files:
             with open(f"{f}.temp", "w", encoding="utf-8") as file:
                 file.write(str(r))
                 file.close()
-            print(f"Subtitle data temp-written to {f}.temp")
+            print(f"Subtitle data temporarily written to {f}.temp incase of failure.")
         else:
             with open(f"{f}.temp", "r", encoding="utf-8") as file:
                 r = ast.literal_eval(file.read())
@@ -131,6 +131,7 @@ for f in files:
                 os.remove(f"{f}.srt")
             print(f"Text subtitles written to {f}.vtt!")
         ### FINISH ###
-        print(f"Subtitles finished for {f}!")
         os.remove(f"{f}.temp")
+        print(f"{f}.temp removed.")
+        print(f"Subtitles finished for {f}!")
         progcount += 1
