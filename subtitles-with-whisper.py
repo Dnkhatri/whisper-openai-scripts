@@ -2,7 +2,7 @@
 # Editable Variables
 EXT = "mp4"
 WHISPER_MODEL = "base"
-WHISPER_VERBOSE = "False"
+WHISPER_VERBOSE = False
 WHISPER_LANGUAGE = "English"
 OUTPUTS = "txt,srt,vtt"
 ###############################
