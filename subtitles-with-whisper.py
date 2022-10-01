@@ -74,6 +74,7 @@ for f in files:
         elif "txt" in OUTPUTS:
             if os.path.exists(f"{f}.txt"):
                 nosubs(progcount)
+        progcount += 1
     else: 
         # Generate subtitles
         print(f"Subtitling {f}...")
