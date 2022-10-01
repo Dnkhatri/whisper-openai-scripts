@@ -66,10 +66,10 @@ for f in files:
         if "srt" in OUTPUTS:
             if os.path.exists(f"{f}.srt"):
                 nosubs(progcount)
-        if "vtt" in OUTPUTS:
+        elif "vtt" in OUTPUTS:
             if os.path.exists(f"{f}.vtt"):
                 nosubs(progcount)
-        if "txt" in OUTPUTS:
+        elif "txt" in OUTPUTS:
             if os.path.exists(f"{f}.txt"):
                 nosubs(progcount)
     else: 
