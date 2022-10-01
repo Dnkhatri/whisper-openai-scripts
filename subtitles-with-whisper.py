@@ -54,14 +54,24 @@ print(f"Found {str(filecount)} files with extension {EXT}!")
 if filecount == 0:
     quit
 print(f"Subtitling {str(filecount)} files...")
+def nosubs():
+    print(f"Subtitles for {f} already exist!")
+    os.system(
+        f"title Skipping {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
+    )
+    progcount += 1
 for f in files:
     # If subtitles already exist
-    if os.path.exists(f"{f}.srt"):
-        print(f"Subtitles for {f} already exist!")
-        os.system(
-            f"title Skipping {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
-        )
-        progcount += 1
+    if os.path.exists(f"{f}.srt") or os.path.exists(f"{f}.txt") or os.path.exists(f"{f}.vtt"):
+        if "srt" in OUTPUTS:
+            if os.path.exists(f"{f}.srt"):
+                nosubs()
+        if "vtt" in OUTPUTS:
+            if os.path.exists(f"{f}.vtt"):
+                nosubs()
+        if "txt" in OUTPUTS:
+            if os.path.exists(f"{f}.txt"):
+                nosubs()
     else: 
         # Generate subtitles
         print(f"Subtitling {f}...")
