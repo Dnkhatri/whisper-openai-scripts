@@ -56,69 +56,68 @@ if filecount == 0:
 print(f"Subtitling {str(filecount)} files...")
 for f in files:
     # If subtitles already exist
-    if os.path.exists(f + ".srt"):
+    if os.path.exists(f"{f}.srt"):
         print(f"Subtitles for {f} already exist!")
         os.system(
             f"title Skipping {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
         )
         progcount += 1
-        break
-    # Generate subtitles
-    print(f"Subtitling {f}...")
-    os.system(
-        f"title Working on {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
-    )
-    if not os.path.exists(f"{f}.temp"):
-        r = model.transcribe(f)
-        with open(f"{f}.temp", "w") as file:
-            file.write(str(r))
-            file.close()
-        print(f"Subtitle data temp-written to {f}.temp")
-    else:
-        with open(f"{f}.temp", "r") as file:
-            r = ast.literal_eval(file.read())
-            file.close()
-        print(f"Subtitle data read from {f}.temp!")
-    ### TXT ###
-    formatted_outputs = OUTPUTS.split(",")
-    if len(formatted_outputs) == 1:
-        formatted_outputs = "".join(formatted_outputs)
-    else:
-        formatted_outputs[len(formatted_outputs) - 1] = "and " + formatted_outputs[len(formatted_outputs) - 1]
-        formatted_outputs = ", ".join(formatted_outputs)
-    print(f"Making subtitle files to {formatted_outputs}...")
-    if "txt" in OUTPUTS:
-        with open(f"{f}.txt", "w") as file:
-            for seg in r["segments"]:
-                file.write(f"{str(seg[TEXT])[1:len(str(seg[TEXT]))]}\n")
-            file.close()
-            print(f"Text subtitles written to {f}.txt!")
-    ### SRT ###
-    if "srt" in OUTPUTS or "vtt" in OUTPUTS:
-        with open(f"{f}.srt", "w") as file:
-            for seg in r["segments"]:
-                id = int(seg["id"]) + 1
-                seg[START] = str("{:.3f}".format(float(seg[START])))
-                start = timedelta(seconds=int(str(seg[START]).split(".")[0]))
-                startdec = str(seg[START]).split(".")[1]
-                seg[END] = str("{:.3f}".format(float(seg[END])))
-                end = timedelta(seconds=int(str(seg[END]).split(".")[0]))
-                enddec = str(seg[END]).split(".")[1]
-                text = str(seg[TEXT])[1 : len(str(seg[TEXT]))]
-                file.write(
-                    f"{str(id)}\n{str(start)},{str(startdec)} --> {str(end)},{str(enddec)}\n{text}\n\n"
-                )
-            file.close()
-            if "srt" in OUTPUTS:
-                print(f"Text subtitles written to {f}.srt!")
-    ### WEBVTT ###
-    if "vtt" in OUTPUTS:
-        webvtt.from_srt(f"{f}.srt").save(output=f"{f}.vtt")
-        if not "srt" in OUTPUTS:
-            os.remove(f"{f}.srt")
-        print(f"Text subtitles written to {f}.vtt!")
-    ### FINISH ###
-    print(f"Subtitles finished for {f}!")
-    os.remove(f"{f}.temp")
-    progcount += 1
-    break
+    else: 
+        # Generate subtitles
+        print(f"Subtitling {f}...")
+        os.system(
+            f"title Working on {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
+        )
+        if not os.path.exists(f"{f}.temp"):
+            r = model.transcribe(f)
+            with open(f"{f}.temp", "w") as file:
+                file.write(str(r))
+                file.close()
+            print(f"Subtitle data temp-written to {f}.temp")
+        else:
+            with open(f"{f}.temp", "r") as file:
+                r = ast.literal_eval(file.read())
+                file.close()
+            print(f"Subtitle data read from {f}.temp!")
+        ### TXT ###
+        formatted_outputs = OUTPUTS.split(",")
+        if len(formatted_outputs) == 1:
+            formatted_outputs = "".join(formatted_outputs)
+        else:
+            formatted_outputs[len(formatted_outputs) - 1] = "and " + formatted_outputs[len(formatted_outputs) - 1]
+            formatted_outputs = ", ".join(formatted_outputs)
+        print(f"Making subtitle files to {formatted_outputs}...")
+        if "txt" in OUTPUTS:
+            with open(f"{f}.txt", "w") as file:
+                for seg in r["segments"]:
+                    file.write(f"{str(seg[TEXT])[1:len(str(seg[TEXT]))]}\n")
+                file.close()
+                print(f"Text subtitles written to {f}.txt!")
+        ### SRT ###
+        if "srt" in OUTPUTS or "vtt" in OUTPUTS:
+            with open(f"{f}.srt", "w") as file:
+                for seg in r["segments"]:
+                    id = int(seg["id"]) + 1
+                    seg[START] = str("{:.3f}".format(float(seg[START])))
+                    start = timedelta(seconds=int(str(seg[START]).split(".")[0]))
+                    startdec = str(seg[START]).split(".")[1]
+                    seg[END] = str("{:.3f}".format(float(seg[END])))
+                    end = timedelta(seconds=int(str(seg[END]).split(".")[0]))
+                    enddec = str(seg[END]).split(".")[1]
+                    text = str(seg[TEXT])[1 : len(str(seg[TEXT]))]
+                    file.write(
+                        f"{str(id)}\n{str(start)},{str(startdec)} --> {str(end)},{str(enddec)}\n{text}\n\n"
+                    )
+                file.close()
+                if "srt" in OUTPUTS:
+                    print(f"Text subtitles written to {f}.srt!")
+        ### WEBVTT ###
+        if "vtt" in OUTPUTS:
+            webvtt.from_srt(f"{f}.srt").save(output=f"{f}.vtt")
+            if not "srt" in OUTPUTS:
+                os.remove(f"{f}.srt")
+            print(f"Text subtitles written to {f}.vtt!")
+        ### FINISH ###
+        print(f"Subtitles finished for {f}!")
+        os.remove(f"{f}.temp")
+        progcount += 1
