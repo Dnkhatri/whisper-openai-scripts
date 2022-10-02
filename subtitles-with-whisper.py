@@ -10,8 +10,6 @@ WHISPER_OUTPUTS = "txt,srt,vtt"
 
 # Clear terminal and set title variables
 import os
-from re import VERBOSE
-
 os.system("cls")
 cwd = os.getcwd()
 folder = os.path.basename(cwd)
