@@ -10,12 +10,14 @@ WHISPER_OUTPUTS = "txt,srt,vtt"
 
 # Clear terminal and set title variables
 import os
-os.system("cls")
+if os.name == 'nt':
+    os.system("cls")
 cwd = os.getcwd()
 folder = os.path.basename(cwd)
-os.system(
-    f"title Subtitling {SEARCH_FOR_THIS_EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
-)
+if os.name == 'nt':
+    os.system(
+        f"title Subtitling {SEARCH_FOR_THIS_EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
+    )
 print(
     """
   ____                                 _____  _       __          __ _      _                         
@@ -63,9 +65,10 @@ print(f"Subtitling {str(filecount)} files...")
 def nosubs(progcount):
     if VERBOSE_SCRIPT == True:
         print(f"Subtitles for {f} already exist!")
-    os.system(
-        f"title Skipping {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {SEARCH_FOR_THIS_EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
-    )
+    if os.name == 'nt':
+        os.system(
+            f"title Skipping {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {SEARCH_FOR_THIS_EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
+        )
     progcount += 1
 for f in files:
     # If subtitles already exist
@@ -83,9 +86,10 @@ for f in files:
     else: 
         # Generate subtitles
         print(f"Subtitling {f}...")
-        os.system(
-            f"title Working on {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {SEARCH_FOR_THIS_EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
-        )
+        if os.name == 'nt':
+            os.system(
+                f"title Working on {f} ({str(progcount)}/{str(filecount)}) ^- Subtitling {SEARCH_FOR_THIS_EXT}'s in {folder} ({cwd}) ^- OpenAI's Whisper ^& Seall^.DEV"
+            )
         if not os.path.exists(f"{f}.temp"):
             r = model.transcribe(f,language=WHISPER_LANGUAGE,verbose=WHISPER_VERBOSE)
             with open(f"{f}.temp", "w", encoding="utf-8") as file:
